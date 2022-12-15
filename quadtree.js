@@ -504,7 +504,8 @@ class QuadTree {
 if (typeof module !== "undefined") {
   module.exports = { Point, Rectangle, QuadTree, Circle };
 }
-const r = new Rectangle(0, 0, 20, 20);
+const r = new Rectangle(0, 0, 23, 23);
 const capacity = 4;
 const quadtree = new QuadTree(r, capacity);
-quadtree.insert(new Point(1, 2, 'sina'))
+quadtree.insert(new Point(2, 2, 'sina'))
+quadtree.insert(new Point(2, 1, 'reza'))
