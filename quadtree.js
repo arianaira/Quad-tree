@@ -516,9 +516,8 @@ class Map
 
   buildMap()
   {
-    const places = ['restaurant', 'hospital', 'shopping center', 'cinema', 'metro station', 'hotel'
-      , 'park', 'bus station']
-    for (let i = 0; i < 50; i++)
+    const places = ['restaurant', 'hospital', 'shopping center', 'cinema', 'hotel']
+    for (let i = 0; i < 500; i++)
     {
       const random = Math.floor(Math.random() * places.length);
       let x = Math.floor(Math.random() * 50);
@@ -526,34 +525,32 @@ class Map
       let p = new Point(x, y, places[random])
       this.quadtree.insert(p)
     }
-    console.log(this.quadtree.points)
   }
 
   suggestLocation(point, place)
   {
     let points = [];
-    points = this.quadtree.kNearest(point, 6, 32, 32);
+    points = this.quadtree.kNearest(point, 8, 64, 64);
     if (place === 'all')
     {
       return points;
     }
+    console.log(points.found)
     let res = [];
-    for (let i = 0; i < points.length; i++)
+    for (let i = 0; i < points.found.length; i++)
     {
-      if (points[i] === place)
+      if (points.found[i].userData === place)
       {
-        res.push(points[i]);
+        res.push(points.found[i]);
       }
     }
-
     return res;
   }
 
 }
-const r = new Rectangle(0, 0, 100, 100);
-// let m = new Map(r, 8)
-// m.buildMap()
-// console.log(m.quadtree)
-// let p = new Point(21, 26, 'sina')
-// let a = m.suggestLocation(p, 'restaurant')
-// console.log(a)
+const r = new Rectangle(0, 0, 400, 400);
+let m = new Map(r, 8)
+m.buildMap()
+let p = new Point(21, 26, 'sina')
+let a = m.suggestLocation(p,'cinema')
+console.log(a)
