@@ -520,8 +520,8 @@ class Map
     for (let i = 0; i < 500; i++)
     {
       const random = Math.floor(Math.random() * places.length);
-      let x = Math.floor(Math.random() * 50);
-      let y = Math.floor(Math.random() * 50);
+      let x = Math.floor(Math.random() * 190);
+      let y = Math.floor(Math.random() * 190);
       let p = new Point(x, y, places[random])
       this.quadtree.insert(p)
     }
@@ -535,7 +535,6 @@ class Map
     {
       return points;
     }
-    console.log(points.found)
     let res = [];
     for (let i = 0; i < points.found.length; i++)
     {
@@ -551,6 +550,6 @@ class Map
 const r = new Rectangle(0, 0, 400, 400);
 let m = new Map(r, 8)
 m.buildMap()
-let p = new Point(21, 26, 'sina')
-let a = m.suggestLocation(p,'cinema')
+let p = new Point(132, 26, 'sina')
+let a = m.suggestLocation(p,'hospital')
 console.log(a)
