@@ -10,9 +10,23 @@
 // https://github.com/CodingTrain/QuadTree
 
 class Point {
-  constructor(x, y) {
+  constructor(x, y, data) {
     this.x = x;
     this.y = y;
+    this.userData = data;
+  }
+
+  // Skips Math.sqrt for faster comparisons
+  sqDistanceFrom(other) {
+    const dx = other.x - this.x;
+    const dy = other.y - this.y;
+
+    return dx * dx + dy * dy;
+  }
+
+  // Pythagorus: a^2 = b^2 + c^2
+  distanceFrom(other) {
+    return Math.sqrt(this.sqDistanceFrom(other));
   }
 }
 
@@ -38,6 +52,40 @@ class Rectangle {
       range.y + range.h < this.y - this.h);
   }
 
+  xDistanceFrom(point) {
+    if (this.left <= point.x && point.x <= this.right) {
+      return 0;
+    }
+
+    return Math.min(
+        Math.abs(point.x - this.left),
+        Math.abs(point.x - this.right)
+    );
+  }
+
+  yDistanceFrom(point) {
+    if (this.top <= point.y && point.y <= this.bottom) {
+      return 0;
+    }
+
+    return Math.min(
+        Math.abs(point.y - this.top),
+        Math.abs(point.y - this.bottom)
+    );
+  }
+
+  // Skips Math.sqrt for faster comparisons
+  sqDistanceFrom(point) {
+    const dx = this.xDistanceFrom(point);
+    const dy = this.yDistanceFrom(point);
+
+    return dx * dx + dy * dy;
+  }
+
+  // Pythagorus: a^2 = b^2 + c^2
+  distanceFrom(point) {
+    return Math.sqrt(this.sqDistanceFrom(point));
+  }
 
 }
 
@@ -47,6 +95,19 @@ class QuadTree {
     this.capacity = n;
     this.points = [];
     this.divided = false;
+  }
+
+  get children() {
+    if (this.divided) {
+      return [
+        this.northeast,
+        this.northwest,
+        this.southeast,
+        this.southwest
+      ];
+    } else {
+      return [];
+    }
   }
 
   subdivide() {
@@ -64,58 +125,6 @@ class QuadTree {
     this.southwest = new QuadTree(sw, this.capacity);
     this.divided = true;
   }
-
-  insert(point) {
-
-    if (!this.boundary.contains(point)) {
-      return false;
-    }
-
-    if (this.points.length < this.capacity) {
-      this.points.push(point);
-      return true;
-    } else {
-      if (!this.divided) {
-        this.subdivide();
-      }
-      if (this.northeast.insert(point)) {
-        return true;
-      } else if (this.northwest.insert(point)) {
-        return true;
-      } else if (this.southeast.insert(point)) {
-        return true;
-      } else if (this.southwest.insert(point)) {
-        return true;
-      }
-    }
-  }
-  // xDistanceFrom(point) {
-  //   if (this.left <= point.x && point.x <= this.right) {
-  //     return 0;
-  //   }
-  //
-  //   return Math.min(
-  //       Math.abs(point.x - this.left),
-  //       Math.abs(point.x - this.right)
-  //   );
-  // }
-  //
-  // yDistanceFrom(point) {
-  //   if (this.top <= point.y && point.y <= this.bottom) {
-  //     return 0;
-  //   }
-  //
-  //   return Math.min(
-  //       Math.abs(point.y - this.top),
-  //       Math.abs(point.y - this.bottom)
-  //   );
-  // }
-  // sqDistanceFrom(point) {
-  //   const dx = this.xDistanceFrom(point);
-  //   const dy = this.yDistanceFrom(point);
-  //
-  //   return dx * dx + dy * dy;
-  // }
   kNearest(searchPoint, maxCount, sqMaxDistance, furthestSqDistance, foundSoFar) {
     let found = [];
 
@@ -154,7 +163,41 @@ class QuadTree {
       furthestSqDistance: Math.sqrt(furthestSqDistance),
     };
   }
+  forEach(fn) {
+    if (this.divided) {
+      this.northeast.forEach(fn);
+      this.northwest.forEach(fn);
+      this.southeast.forEach(fn);
+      this.southwest.forEach(fn);
+    } else {
+      this.points.forEach(fn);
+    }
+  }
 
+  insert(point) {
+
+    if (!this.boundary.contains(point)) {
+      return false;
+    }
+
+    if (this.points.length < this.capacity) {
+      this.points.push(point);
+      return true;
+    } else {
+      if (!this.divided) {
+        this.subdivide();
+      }
+      if (this.northeast.insert(point)) {
+        return true;
+      } else if (this.northwest.insert(point)) {
+        return true;
+      } else if (this.southeast.insert(point)) {
+        return true;
+      } else if (this.southwest.insert(point)) {
+        return true;
+      }
+    }
+  }
 
   query(range, found) {
     if (!found) {
@@ -199,8 +242,7 @@ class QuadTree {
   }
 
 }
-class Map
-{
+class Map {
   DEFAULT_CAPACITY = 8;
 
   constructor(qTree, capacity = this.DEFAULT_CAPACITY) {
@@ -208,13 +250,15 @@ class Map
     this.quadtree = qTree;
   }
 
-  buildMap()
-  {
+  buildMap() {
     const places = ['restaurant', 'hospital', 'shopping center', 'cinema', 'hotel']
+    const nums = [300, -300]
     for (let i = 0; i < 500; i++) {
       const random = Math.floor(Math.random() * places.length);
-      let x = Math.floor(Math.random() * 200);
-      let y = Math.floor(Math.random() * 200);
+      let m = Math.floor(Math.random() * nums.length);
+      let n = Math.floor(Math.random() * nums.length)
+      let x = Math.floor(Math.random() * nums[m]);
+      let y = Math.floor(Math.random() * nums[n]);
       let p = new Point(x, y, places[random])
       this.quadtree.insert(p)
     }
@@ -222,9 +266,10 @@ class Map
 
   suggestLocation(point, place) {
     let points = [];
-    points = this.quadtree.kNearest(point, 8, 64, 64);
+    points = this.quadtree.kNearest(point, 8, 10000, 10000, 6);
     if (place === 'all') {
-      return points;
+    if (place === 'all') {
+      return points.found;
     }
     let res = [];
     for (let i = 0; i < points.found.length; i++) {
@@ -234,4 +279,6 @@ class Map
     }
     return res;
   }
-}
+
+}}
+

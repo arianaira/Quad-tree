@@ -1,0 +1,12 @@
+body {
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: center;
+    align-items: center;
+}
+#output {
+    margin-top:10px ;
+    font-family: "Roboto";
+    font-size: 22px;
+    color:darkred;
+}
