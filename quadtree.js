@@ -504,6 +504,52 @@ class QuadTree {
 if (typeof module !== "undefined") {
   module.exports = { Point, Rectangle, QuadTree, Circle };
 }
-const r = new Rectangle(0, 0, 100, 100);
-const capacity = 8;
-const quadtree = new QuadTree(r, capacity);
+
+class Map
+{
+  DEFAULT_CAPACITY = 8;
+  constructor(boundray, capacity = this.DEFAULT_CAPACITY)
+  {
+    this.capacity = capacity;
+    this.quadtree = new QuadTree(boundray, this.capacity);
+  }
+
+  buildMap()
+  {
+    const places = ['restaurant', 'hospital', 'shopping center', 'cinema', 'hotel']
+    for (let i = 0; i < 500; i++)
+    {
+      const random = Math.floor(Math.random() * places.length);
+      let x = Math.floor(Math.random() * 190);
+      let y = Math.floor(Math.random() * 190);
+      let p = new Point(x, y, places[random])
+      this.quadtree.insert(p)
+    }
+  }
+
+  suggestLocation(point, place)
+  {
+    let points = [];
+    points = this.quadtree.kNearest(point, 8, 64, 64);
+    if (place === 'all')
+    {
+      return points;
+    }
+    let res = [];
+    for (let i = 0; i < points.found.length; i++)
+    {
+      if (points.found[i].userData === place)
+      {
+        res.push(points.found[i]);
+      }
+    }
+    return res;
+  }
+
+}
+const r = new Rectangle(0, 0, 400, 400);
+let m = new Map(r, 8)
+m.buildMap()
+let p = new Point(132, 26, 'sina')
+let a = m.suggestLocation(p,'hospital')
+console.log(a)
