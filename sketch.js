@@ -6,6 +6,8 @@ function setup()
 
     let boundary = new Rectangle(200, 200, 200, 200);
     qTree = new QuadTree(boundary, 8);
+    const ini = prompt('type one of the following \n restaurant/hospital/museum/shop');
+    console.log(`nearest ${ini}s to you`)
     map = new Map(qTree, 8)
     map.buildMap()
     // console.log(qTree)
