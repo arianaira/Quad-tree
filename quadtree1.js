@@ -223,13 +223,16 @@ class QuadTree {
 
 
   show() {
-    stroke(255);
+    stroke('purple');
     noFill();
     strokeWeight(1);
     rectMode(CENTER);
     rect(this.boundary.x, this.boundary.y, this.boundary.w * 2, this.boundary.h * 2);
     for (let p of this.points) {
-      strokeWeight(2);
+
+      let colors={'restaurant':'red', 'hospital':'white', 'shopping center':'pink', 'cinema':'green', 'hotel':'blue'}
+      stroke(colors[p.userData])
+      strokeWeight(3)
       point(p.x, p.y);
     }
 
@@ -252,8 +255,8 @@ class Map {
 
   buildMap() {
     const places = ['restaurant', 'hospital', 'shopping center', 'cinema', 'hotel']
-    const nums = [300, -300]
-    for (let i = 0; i < 500; i++) {
+    const nums = [600, -600]
+    for (let i = 0; i < 1000; i++) {
       const random = Math.floor(Math.random() * places.length);
       let m = Math.floor(Math.random() * nums.length);
       let n = Math.floor(Math.random() * nums.length)
@@ -266,8 +269,7 @@ class Map {
 
   suggestLocation(point, place) {
     let points = [];
-    points = this.quadtree.kNearest(point, 8, 10000, 10000, 6);
-    if (place === 'all') {
+    points = this.quadtree.kNearest(point, 10, 10000, 10000, 0);
     if (place === 'all') {
       return points.found;
     }
@@ -278,7 +280,5 @@ class Map {
       }
     }
     return res;
-  }
-
 }}
 

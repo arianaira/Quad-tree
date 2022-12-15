@@ -2,9 +2,8 @@ let qTree
 let map
 function setup()
 {
-    createCanvas(400, 400);
-
-    let boundary = new Rectangle(200, 200, 200, 200);
+    createCanvas(600, 600);
+    let boundary = new Rectangle(400, 400, 400, 400);
     qTree = new QuadTree(boundary, 8);
     map = new Map(qTree, 8)
     map.buildMap()
@@ -20,12 +19,20 @@ function setup()
 
 function draw()
 {
+    let a;
     if(mouseIsPressed)
     {
         let m = new Point(mouseX, mouseY);
-        let a = map.suggestLocation(m, 'all')
+        a = map.suggestLocation(m, 'all')
         let out=document.getElementById('output')
-        out.innerText=JSON.stringify(a)
+
+        out.innerText=''
+        for(let ans of a){
+            ans=JSON.stringify(ans)
+            out.innerText+=ans.slice(1,ans.length-1)+'\n'
+
+        }
+        // out.innerText=JSON.stringify(a)
         console.log(a)
     }
     background(0);
