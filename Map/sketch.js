@@ -17,7 +17,6 @@ function draw()
     let a;
     if(mouseIsPressed)
     {
-
         let m = new Point(mouseX, mouseY);
         let a = map.suggestLocation(m, place)
         let out=document.getElementById('output')

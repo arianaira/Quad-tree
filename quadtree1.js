@@ -261,7 +261,8 @@ class QuadTree
     return found;
   }
 
-  show() {
+  show()
+  {
     stroke('purple');
     noFill();
     strokeWeight(1);
@@ -281,6 +282,28 @@ class QuadTree
       this.northwest.show();
       this.southeast.show();
       this.southwest.show();
+    }
+  }
+
+  show2()
+  {
+    stroke(255);
+    strokeWeight(1)
+    noFill();
+    rectMode(CENTER);
+    rect(this.boundary.x, this.boundary.y, this.boundary.w * 2, this.boundary.h * 2);
+    if(this.divided)
+    {
+      this.northeast.show2();
+      this.northwest.show2();
+      this.southeast.show2();
+      this.southwest.show2();
+    }
+
+    for (let p of this.points)
+    {
+      strokeWeight(4);
+      point(p.x, p.y);
     }
   }
 
