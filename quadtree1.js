@@ -313,7 +313,7 @@ class Map
   suggestLocation(point, place = 'all')
   {
     let points = [];
-    points = this.quadtree.kNearest(point, 8, 10000, 10000, 6);
+    points = this.quadtree.kNearest(point, 8, 1500, 1500, 0);
     if (place === 'all') {
       return points.found;
     }
