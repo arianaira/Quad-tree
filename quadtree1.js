@@ -1,13 +1,5 @@
-// Daniel Shiffman
-// http://codingtra.in
-// http://patreon.com/codingtrain
-
-// QuadTree
-// 1: https://www.youtube.com/watch?v=OJxEcs0w_kE
-// 2: https://www.youtube.com/watch?v=QQx_NmCIuCY
-
-// For more:
-// https://github.com/CodingTrain/QuadTree
+// https://www.ernst-schmidt.com/coding/5d70ea631d0a070017666552
+// Quadtree and Flocking Simulation by Kubi
 
 class Point
 {
@@ -323,7 +315,7 @@ class Map
   {
     let points = [];
     points = this.quadtree.kNearest(point, 8, 10000, 10000, 6);
-    if (place === 'all') {
+    // if (place === 'all') {
     if (place === 'all') {
       return points.found;
     }
@@ -337,6 +329,5 @@ class Map
     }
     return res;
   }
-
-}}
+}
 
