@@ -7,7 +7,8 @@ function setup()
 
     let boundary = new Rectangle(200, 200, 200, 200);
     qTree = new QuadTree(boundary, 8);
-    place = prompt('type one of the following \n restaurant/hospital/shopping center/cinema/hotel/all');
+    place = prompt('type one of the following \nrestaurant ' +
+        '\nhospital\nshopping center\ncinema\nhotel\nall');
     if (place !== 'all')
     {
         console.log(`nearest ${place}s to you`)
