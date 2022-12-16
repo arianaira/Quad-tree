@@ -1,20 +1,19 @@
 let qTree
 let map
+var place;
 function setup()
 {
     createCanvas(600, 600);
     let boundary = new Rectangle(400, 400, 400, 400);
     qTree = new QuadTree(boundary, 8);
+    place = prompt('type one of the following \nrestaurant ' +
+        '\nhospital\nshopping center\ncinema\nhotel\nall');
+    if (place !== 'all')
+    {
+        console.log(`nearest ${place}s to you`)
+    }
     map = new Map(qTree, 8)
     map.buildMap()
-    // console.log(qTree)
-    // for (let i = 0; i < 500; i++)
-    // {
-    //     let p = new Point(random(width), random(height));
-    //     qTree.insert(p);
-    // }
-    // background(0);
-    // qTree.show();
 }
 
 function draw()
@@ -23,7 +22,7 @@ function draw()
     if(mouseIsPressed)
     {
         let m = new Point(mouseX, mouseY);
-        a = map.suggestLocation(m, 'all')
+        let a = map.suggestLocation(m, place)
         let out=document.getElementById('output')
 
         out.innerText=''
@@ -32,7 +31,6 @@ function draw()
             out.innerText+=ans.slice(1,ans.length-1)+'\n'
 
         }
-        // out.innerText=JSON.stringify(a)
         console.log(a)
     }
     background(0);
