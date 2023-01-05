@@ -4,12 +4,13 @@ A quad-tree is a tree data structure in which each internal node has exactly fou
 partition a two-dimensional space by recursively subdividing it into four quadrants or regions.
 
 ## Screenshots
-
+<img width="599" alt="Screenshot 2023-01-05 at 09 48 18" src="https://user-images.githubusercontent.com/45508098/210773722-0b8176b1-7e10-4624-b6f3-355f2cc039e5.png">
 ## Features
 
 - Insert points into the quad-tree
 - Query the quad-tree to find all points within a given bounding box
 - Rebalance the tree to ensure good performance
+
 
 ## Getting Started
 
