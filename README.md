@@ -5,6 +5,8 @@ partition a two-dimensional space by recursively subdividing it into four quadra
 
 ## Screenshots
 <img width="599" alt="Screenshot 2023-01-05 at 09 48 18" src="https://user-images.githubusercontent.com/45508098/210773722-0b8176b1-7e10-4624-b6f3-355f2cc039e5.png">
+
+
 ## Features
 
 - Insert points into the quad-tree
